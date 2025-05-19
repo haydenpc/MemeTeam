@@ -119,3 +119,22 @@
     @apply bg-background text-foreground;
   }
 }
+.logo {
+  font-family: 'Bangers', sans-serif;
+  font-size: 2rem;
+  color: rgb(0, 255, 0, 0.88);
+  text-shadow: 2px 2px 4px #7f3dff ;
+  text-transform: uppercase;
+  transform: rotate(-5deg);
+  text-decoration: none;
+}
+
+.logo:hover {
+  transform: rotate(-3deg) scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .logo {
+    font-size: 1.5rem;
+  }
+}
