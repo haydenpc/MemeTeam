@@ -17,8 +17,12 @@ router.post('/signup', async(req, res) => {
     const result = await pool.query(sql, [id]);
     const user = result.rows[0];
     if (result) {
-        const token = jwt.sign({ id: user.id, username:user.username,team_id: user.team_id }, JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
-            if(err) { console.log(err) }
+        const token = jwt.sign({ id: user.id, 
+            username:user.username,
+            team_id: user.team_id }, 
+            JWT_SECRET, 
+            { expiresIn: '1h' }
+        );
             res.status(200)
             res.json({
                 success: true,
@@ -26,7 +30,6 @@ router.post('/signup', async(req, res) => {
                 token,
                 username: user.username,
             });
-        });
     } else {
         res.status(403).json({ message: 'Failed', data: username });
     }
@@ -37,6 +40,12 @@ router.post('/login', async(req, res) => {
     const sql = 'SELECT * FROM users WHERE username = $1';
     const result = await pool.query(sql, [username]);
     const user = result.rows[0];
+    console.log(username,password,user)
+
+    if(!user) {
+        return res.status(404).json({ success: false, message: 'User not found'})
+    }
+
     bcrypt.compare(password, user.passwd, function(err, result) {
         if(err) throw(err)
         if (result) {
