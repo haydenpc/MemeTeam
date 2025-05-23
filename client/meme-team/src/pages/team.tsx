@@ -19,6 +19,7 @@ import {
 
   } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge.js"
 
 const inTeam =  true;
  
@@ -65,15 +66,13 @@ export default function TeamPage() {
                   Leave Team
                 </Button>
             </CardHeader>
-            <CardContent className="ml-5 mr-5 mb-2 border border-[#6405b0]/30 rounded-sm bg-[#5A29B6]/20  text-white px-4 py-4">
+            <CardContent className="ml-5 mr-5 mb-2 border border-[#6405b0]/30 rounded-sm bg-primary/10  text-white px-4 py-4">
               <div className="flex items-center gap-4">
                 <div className="border border-[#6405b0]/80 h-12 w-12 rounded-full bg-white/80" />
                 <div className="flex flex-col">
                   <div className="flex items-center gap-2">
                   <p className="font-semibold text-white">Alex Mark</p>
-                  <span className="text-xs bg-[#631dbf] px-3 py-1 rounded-full text-black font-medium">
-                    Team Leader
-                  </span>
+                  <Badge variant="outline">Team Leader</Badge>
                   </div>
                   <p className="text-sm text-white/70">Manages team settings and member access</p>
                 </div>
@@ -96,9 +95,7 @@ export default function TeamPage() {
                     <span className="font-semibold">{member.name}</span>
                   </div>
                   {member.isLeader && (
-                    <span className="ml-auto text-xs bg-[#631dbf] px-3 py-1 rounded-full text-black font-medium">
-                    Leader
-                  </span>
+                     <Badge variant="outline">Leader</Badge>
                   )}
                 </li>
                 ))}
