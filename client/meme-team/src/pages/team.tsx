@@ -20,8 +20,9 @@ import {
   } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge.js"
+import { useState } from "react"
 
-const inTeam =  true;
+const inTeam =  false;
  
 const formSchema = z.object({
   teamName: z.string().min(4, {
@@ -32,6 +33,8 @@ const formSchema = z.object({
   }),
 })
 export default function TeamPage() {
+  const [mode, setMode] = useState<"join" | "create">("join");
+
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -106,48 +109,76 @@ export default function TeamPage() {
     </div>
     ) : (
       <div className="flex items-center justify-center min-h-screen bg-black text-white">
-      <Card className="w-[350px] bg-background border-none">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+         <div className="w-full max-w-3xl space-y-6">
+          <Card className="rounded-sm border border-white/80 bg-background text-white">
             <CardHeader>
-              <CardTitle>Team</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <FormField
-                control={form.control}
-                name="teamName"
-                render={({ field }) => (
-                  <FormItem className="pb-4">
-                    <FormLabel>Team Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="teamName" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="inviteCode"
-                render={({ field }) => (
-                  <FormItem className="pb-4">
-                    <FormLabel>Passcode</FormLabel>
-                    <FormControl>
-                      <Input placeholder="inviteCode" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
+              <CardTitle className="text-3xl">
+                Join or Create Team
+              </CardTitle>
+              <p className="text-sm text-white/70">You are not currently part of any team. Create a new team or join a existing one.</p>
+            </CardHeader>     
+            <CardContent className="ml-5 mr-5 mb-4 rounded-sm bg-zinc-800  text-white px-1 py-1">
+              <div className="flex">
+                <button
+                  onClick={() => setMode("join")}
+                  className={`flex-1 px-3 py-2 text-sm font medium rounded-sm ${
+                    mode === "join" ?  "bg-black/80 text-white border border-zinc-800" : "bg-zinc-800 text-white"
+                  }`}
+                >
+                  Join Team
+                </button>
+                <button 
+                  onClick={() => setMode("create")}
+                  className={`flex-1 px-3 py-2 text-sm font medium rounded-sm  ${
+                    mode === "join" ? "bg-zinc-800 text-white" : "bg-black/80 text-white border border-zinc-800"
+                  }`}
+                >
+                  Create Team
+                </button>
+              </div>
             </CardContent>
-            <CardFooter className="flex flex-col items-center gap-2">
-              <Button type="submit" className="w-full">Submit</Button>
-              <p className="text-sm text-muted-foreground">Already have a team?</p>
-              <a href="/joinTeam" className="text-primary hover:underline">
-                Join Team
-              </a>
-            </CardFooter>
-          </form>
-        </Form>
-      </Card>
-    </div>
-    )
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <CardContent className="space-y-2">
+                {mode === "join" && (
+                  <FormField
+                  control={form.control}
+                    name="inviteCode"
+                    render={({ field }) => (
+                      <FormItem>
+                      <FormLabel>InviteCode</FormLabel>
+                      <FormControl>
+                      <Input className="rounded-sm" placeholder="Enter team invite code" {...field}/>
+                      </FormControl>
+                      </FormItem>
+                    )}
+                    />
+                )}
+                 <p className="text-sm text-white/70">Enter the invite code provided by your leader</p>
+                {mode === "create" && (
+                  <FormField
+                  control={form.control}
+                    name="teamName"
+                    render={({ field }) => (
+                      <FormItem>
+                      <FormLabel>Team Name</FormLabel>
+                      <FormControl>
+                      <Input placeholder="Enter team name" {...field}/>
+                      </FormControl>
+                      </FormItem>
+                    )}
+                    />
+                )}
+                </CardContent>
+                <CardFooter className="pt-3">
+                  <Button type="submit" className="w-full mt-1 bg-primary/40 rounded-sm">
+                    {mode === "join" ? "Join Team" : "Create Team"}
+                  </Button>
+                </CardFooter>
+                </form>
+              </Form>
+            </Card>
+          </div>
+        </div>
+    );
 }
