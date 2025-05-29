@@ -110,6 +110,7 @@ export default function TeamPage() {
     ) : (
       <div className="flex items-center justify-center min-h-screen bg-black text-white">
          <div className="w-full max-w-3xl space-y-6">
+          <h1 className="text-5xl font-semibold">Team</h1>
           <Card className="rounded-sm border border-white/80 bg-background text-white">
             <CardHeader>
               <CardTitle className="text-3xl">
