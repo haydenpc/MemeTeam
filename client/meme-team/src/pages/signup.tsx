@@ -48,8 +48,8 @@ export default function Signup() {
     }
 
 return (
-  <div className="flex items-center justify-center min-h-screen">
-      <Card className="w-[350px]">
+  <div className="flex items-center justify-center min-h-screen bg-black">
+      <Card className="w-[350px] border-white/80 bg-background">
           <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                   <CardHeader>
