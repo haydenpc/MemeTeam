@@ -141,6 +141,7 @@ export default function TeamPage() {
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <CardContent className="space-y-2">
                 {mode === "join" && (
+                  <>
                   <FormField
                   control={form.control}
                     name="inviteCode"
@@ -153,9 +154,11 @@ export default function TeamPage() {
                       </FormItem>
                     )}
                     />
+                    <p className="text-sm text-white/70">Enter the invite code provided by your leader</p>
+                  </>
                 )}
-                 <p className="text-sm text-white/70">Enter the invite code provided by your leader</p>
                 {mode === "create" && (
+                <>
                   <FormField
                   control={form.control}
                     name="teamName"
@@ -168,6 +171,8 @@ export default function TeamPage() {
                       </FormItem>
                     )}
                     />
+                  <p className="text-sm text-white/70">choose a name for your new team.</p>
+                </>
                 )}
                 </CardContent>
                 <CardFooter className="pt-3">
