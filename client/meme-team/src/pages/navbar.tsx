@@ -31,6 +31,11 @@ export default function Navbar() {
                   Teams
               </Link>
             </NavigationMenuItem>
+            <NavigationMenuItem>
+              <Link href="/memes" className={navigationMenuTriggerStyle()}>
+                  Memes
+              </Link>
+            </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
       </div>
