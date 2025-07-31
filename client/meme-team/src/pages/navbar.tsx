@@ -32,8 +32,8 @@ export default function Navbar() {
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link href="/memes" className={navigationMenuTriggerStyle()}>
-                  Memes
+              <Link href="/edit" className={navigationMenuTriggerStyle()}>
+                  editor
               </Link>
             </NavigationMenuItem>
           </NavigationMenuList>

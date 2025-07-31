@@ -29,5 +29,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "../../server/db/config.js"]
+  "include": ["src", "../../server/db/config.js", "public/resources/js/main.js", "public/resources/js/load-image.js", "public/resources/js/initialization.js", "public/resources/js/helpers.js", "public/resources/js/handlers.js", "public/resources/js/choice-image.js"]
 }
