@@ -336,7 +336,6 @@ useEffect(() => {
                           crossOrigin="anonymous"
                         />
                       </div>
-                      <p className="text-sm text-white/70 mt-1 text-center">{meme.name}</p>
                     </div>
                   ))}
               </div>
