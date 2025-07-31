@@ -251,14 +251,6 @@ export default function MemePage() {
     link.click();
   };
 
-  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setSelectedMeme(url);
-    }
-  };
-
   const handleBack = () => {
     setSelectedMeme(null);
     setIsEditing(false);
@@ -275,18 +267,12 @@ export default function MemePage() {
           <Card className="border border-white/80 bg-background rounded-sm">
             <CardHeader>
               <CardTitle className="text-2xl font-bold">
-                Select From Top 100 Memes or Upload Your Own
+                Select From Top 100 Memes
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="choice-section mt-5">
                 <div className="choice text-center mb-5">
-                  <Input
-                    type="file"
-                    accept="image/*"
-                    className="text-white"
-                    onChange={handleFileInput}
-                  />
                 </div>
                 <div className="grid memes-container">
                    <div className="grid-sizer w-[250px]"></div>
