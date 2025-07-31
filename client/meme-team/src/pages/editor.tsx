@@ -138,10 +138,12 @@ export default function MemePage() {
   const [opacity, setOpacity] = useState(100);
   const [textAlign, setTextAlign] = useState("left");
   const [fontStyle, setFontStyle] = useState({ bold: false, italic: false, underline: false });
+  const [savedMemes, setSavedMemes] = useState<string[]>([]);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fabricCanvasRef = useRef<Canvas | null>(null);
   const masonryRef = useRef<Masonry | null>(null);
+  const savedMemesMasonryRef = useRef<Masonry | null>(null)
 
   useEffect(() => {
     if (canvasRef.current && !fabricCanvasRef.current) {
@@ -159,15 +161,33 @@ export default function MemePage() {
           itemSelector: ".grid-item",
           columnWidth: ".grid-sizer",
           percentPosition: true,
-          gutter: 10,
+          gutter: 8,
         });
       });
+    }
+
+    const savedGrid = document.querySelector('.saved-memes-container');
+    if(savedGrid) {
+      ImagesLoaded(savedGrid, () => {
+        savedMemesMasonryRef.current = new Masonry(savedGrid, {
+          itemSelector:".saved-grid-item",
+          columnWidth:".saved-grid-sizer",
+          percentPosition: true,
+          gutter:8,
+        })
+      })
     }
 
     return () => {
       if (fabricCanvasRef.current) {
         fabricCanvasRef.current.dispose();
         fabricCanvasRef.current = null;
+      }
+      if (masonryRef.current) {
+        masonryRef.current.destroy();
+      }
+      if (savedMemesMasonryRef.current) {
+        savedMemesMasonryRef.current.destroy();
       }
     };
   }, []);
@@ -211,13 +231,22 @@ export default function MemePage() {
     setIsEditing(true);
   }
 }, [selectedMeme]);
+
+useEffect(() => {
+  if(savedMemesMasonryRef.current) {
+    ImagesLoaded(".saved-memes-container", () => {
+      savedMemesMasonryRef.current?.layout();
+    });
+  }
+}, [savedMemes])
+
   const addTextToCanvas = () => {
     if (!fabricCanvasRef.current || !textContent) return;
 
     const text = new Textbox(textContent, {
       left: 50,
       top: 50,
-      width: fabricCanvasRef.current.getWidth() -100,
+      width: fabricCanvasRef.current.getWidth() - 100,
       fontSize,
       fontFamily,
       fill: textColor,
@@ -245,6 +274,7 @@ export default function MemePage() {
       multiplier: 1,
       quality: 1,
     });
+    setSavedMemes((prev) => [dataURL, ...prev.slice(0, 19)]);
     const link = document.createElement("a");
     link.href = dataURL;
     link.download = "meme.png";
@@ -271,29 +301,36 @@ export default function MemePage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="choice-section mt-5">
-                <div className="choice text-center mb-5">
-                </div>
-                <div className="grid memes-container">
-                   <div className="grid-sizer w-[250px]"></div>
-                  {memeTemplates.map((meme) => (
+              <div
+               className="memes-container"
+              style={{
+                maxHeight: "400px",
+                overflowY: 'auto',
+                padding: "10px"
+              }}
+              >
+                <div className="grid-sizer w-[200px]"></div>
+                {memeTemplates.map((meme) => (
+                  <div
+                    key={meme.name}
+                    className="grid-item cursor-pointer"
+                    onClick={() => setSelectedMeme(meme.url)}
+                  >
                     <div
-                      key={meme.name}
-                      className="grid-item cursor-pointer"
-                      onClick={() => setSelectedMeme(meme.url)}
+                      className="meme-container"
+                      style={{
+                      width: "200px",
+                      height: "150px",
+                      backgroundColor: "#1a1a1a",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      overflow: "hidden",
+                      transition : 'transform 0.2s',
+                    }}
+                      onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+                      onMouseleave={(e) => (e.currentTarget.style.transform = "scale(1)")}
                     >
-                      <div
-                        className="meme-container"
-                        style={{
-                          width: "250px",
-                          height: "200px",
-                          backgroundColor: "#1a1a1a",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          overflow: "hidden",
-                        }}
-                      >
                         <img
                           src={meme.url}
                           alt={meme.name}
@@ -301,9 +338,9 @@ export default function MemePage() {
                           crossOrigin="anonymous"
                         />
                       </div>
+                      <p className="text-sm text-white/70 mt-1 text-center">{meme.name}</p>
                     </div>
                   ))}
-                </div>
               </div>
             </CardContent>
           </Card>
