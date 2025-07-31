@@ -50,7 +50,6 @@ const memeTemplates = [
   {"id":"92084495","name":"Charlie Conspiracy (Always Sunny in Philidelphia)","url":"https:\/\/i.imgflip.com\/1itoun.jpg","width":1024,"height":768,"box_count":2,"captions":36250},
   {"id":"605588825","name":"Cheating Coldplay","url":"https:\/\/i.imgflip.com\/a0jvbt.jpg","width":1024,"height":838,"box_count":2,"captions":3250},
   {"id":"249257686","name":"Bugs bunny communist","url":"https:\/\/i.imgflip.com\/44eggm.png","width":460,"height":284,"box_count":2,"captions":47250},
-  {"id":"91998305","name":"Drake Blank","url":"https:\/\/i.imgflip.com\/1iruch.jpg","width":717,"height":717,"box_count":2,"captions":62000},
   {"id":"181913649","name":"Drake Hotline Bling","url":"https:\/\/i.imgflip.com\/30b1gx.jpg","width":1200,"height":1200,"box_count":2,"captions":1438750},
   {"id":"87743020","name":"Two Buttons","url":"https:\/\/i.imgflip.com\/1g8my4.jpg","width":600,"height":908,"box_count":3,"captions":1125000},
   {"id":"112126428","name":"Distracted Boyfriend","url":"https:\/\/i.imgflip.com\/1ur9b0.jpg","width":1200,"height":800,"box_count":3,"captions":1134500},
@@ -329,7 +328,6 @@ useEffect(() => {
                       transition : 'transform 0.2s',
                     }}
                       onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-                      onMouseleave={(e) => (e.currentTarget.style.transform = "scale(1)")}
                     >
                         <img
                           src={meme.url}
