@@ -17,7 +17,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Canvas, Image, Textbox, Shadow } from "fabric";
-
 import Masonry from "masonry-layout";
 import ImagesLoaded from "imagesloaded";
 
@@ -138,11 +137,25 @@ export default function MemePage() {
   const [textAlign, setTextAlign] = useState("left");
   const [fontStyle, setFontStyle] = useState({ bold: false, italic: false, underline: false });
   const [savedMemes, setSavedMemes] = useState<string[]>([]);
+  const [carouselIndex, setCarouselIndex] = useState(0);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fabricCanvasRef = useRef<Canvas | null>(null);
-  const masonryRef = useRef<Masonry | null>(null);
-  const savedMemesMasonryRef = useRef<Masonry | null>(null)
+  const savedMemesMasonryRef = useRef<Masonry | null>(null);
+
+  const ITEMS_PER_SLIDE = 4;
+
+  const handleNext = () => {
+    console.log("handlePrev, current index:", carouselIndex)
+    setCarouselIndex((prev) =>
+      Math.min(prev + ITEMS_PER_SLIDE, memeTemplates.length - ITEMS_PER_SLIDE)
+    );
+  };
+
+  const handlePrev = () => {
+    console.log("handleNext, current index:", carouselIndex)
+    setCarouselIndex((prev) => Math.max(prev - ITEMS_PER_SLIDE, 0));
+  }
 
   useEffect(() => {
     if (canvasRef.current && !fabricCanvasRef.current) {
@@ -153,37 +166,22 @@ export default function MemePage() {
       });
     }
 
-    const grid = document.querySelector(".memes-container");
-    if (grid) {
-      ImagesLoaded(grid, () => {
-        masonryRef.current = new Masonry(grid, {
-          itemSelector: ".grid-item",
-          columnWidth: ".grid-sizer",
+    const savedGrid = document.querySelector(".saved.memes-container");
+    if (savedGrid) {
+      ImagesLoaded(savedGrid, () => {
+        savedMemesMasonryRef.current = new Masonry(savedGrid, {
+          itemSelector: ".saved.grid-item",
+          columnWidth: ".saved.grid-sizer",
           percentPosition: true,
           gutter: 8,
         });
       });
     }
 
-    const savedGrid = document.querySelector('.saved-memes-container');
-    if(savedGrid) {
-      ImagesLoaded(savedGrid, () => {
-        savedMemesMasonryRef.current = new Masonry(savedGrid, {
-          itemSelector:".saved-grid-item",
-          columnWidth:".saved-grid-sizer",
-          percentPosition: true,
-          gutter:8,
-        })
-      })
-    }
-
     return () => {
       if (fabricCanvasRef.current) {
         fabricCanvasRef.current.dispose();
         fabricCanvasRef.current = null;
-      }
-      if (masonryRef.current) {
-        masonryRef.current.destroy();
       }
       if (savedMemesMasonryRef.current) {
         savedMemesMasonryRef.current.destroy();
@@ -290,44 +288,66 @@ useEffect(() => {
   };
 
   return (
-    <div className="px-8 py-10 gap-10 bg-black flex min-h-screen bg-background text-white">
-      <div className="w-3xl space-y-6">
+    <div className="px-8 py-10 gap-10 bg-black flex bg-background text-white">
+      <div className=" space-y-6">
         {!isEditing && (
-          <Card className="border border-white/80 bg-background rounded-sm">
+          <Card className="flex h-[700px] border border-white/80 bg-background rounded-sm">
             <CardHeader>
               <CardTitle className="text-2xl font-bold">
                 Select From Top 100 Memes
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div
-               className="memes-container"
-              style={{
-                maxHeight: "400px",
-                overflowY: 'auto',
-                padding: "10px"
-              }}
+            <CardContent className="flex flex-col items-center justify-between h-full">
+              <div className="relative w-full h[600px]">
+              <Button
+                className="absolute bottom transform -translate-x-1/2 bg-primary/40 rounded-full p-2"
+                onClick={handlePrev}
+                disabled={carouselIndex >= memeTemplates.length + ITEMS_PER_SLIDE}
               >
-                <div className="grid-sizer w-[200px]"></div>
+              </Button>
+                {}
+                <div className="carousel-container overflow-y-hidden overflow-x-hidden "
+                style={{
+                  width:"100%",
+                  height: "3.4%",
+                  position: "relative",
+                }}
+              >
+                <div
+                className="carousel-track transtion-transform duration-300 ease-in-out"
+                style={{
+                  transform: `translateY(-${(carouselIndex / ITEMS_PER_SLIDE) * 3}%)`,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "8px",
+                }}
+              >
                 {memeTemplates.map((meme) => (
                   <div
                     key={meme.name}
-                    className="grid-item cursor-pointer"
+                    className="carousel-item"
+                    style={{
+                      width: "150px",
+                      height: "150px",
+                      flexShrink: 4,
+                    }}
                     onClick={() => setSelectedMeme(meme.url)}
                   >
                     <div
-                      className="meme-container"
+                      className="meme-container cursor-pointer"
                       style={{
-                      width: "200px",
+                      width: "150px",
                       height: "150px",
                       backgroundColor: "#1a1a1a",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       overflow: "hidden",
+                      margin: "0 auto",
                       transition : 'transform 0.2s',
                     }}
                       onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+                      onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
                     >
                         <img
                           src={meme.url}
@@ -338,6 +358,14 @@ useEffect(() => {
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+                <Button
+              className="absolute top transform -translate-x-1/2 bg-primary/40 rounded-full p-2"
+              onClick={handleNext}
+              disabled={carouselIndex >= memeTemplates.length - ITEMS_PER_SLIDE}
+              >
+              </Button>
               </div>
             </CardContent>
           </Card>
