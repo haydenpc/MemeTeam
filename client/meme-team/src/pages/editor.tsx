@@ -19,6 +19,7 @@ import {
 import { Canvas, Image, Textbox, Shadow } from "fabric";
 import Masonry from "masonry-layout";
 import ImagesLoaded from "imagesloaded";
+import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 
 const memeTemplates = [
   {"id":"234202281","name":"AJ Styles & Undertaker","url":"https:\/\/i.imgflip.com\/3vfrmx.jpg","width":933,"height":525,"box_count":2,"captions":41000},{"id":"84341851","name":"Evil Kermit","url":"https:\/\/i.imgflip.com\/1e7ql7.jpg","width":700,"height":325,"box_count":2,"captions":156250},
@@ -288,91 +289,99 @@ useEffect(() => {
   };
 
   return (
-    <div className="px-8 py-10 gap-10 bg-black flex bg-background text-white">
-      <div className=" space-y-6">
+    <div className="px-8 py-10 gap-10 bg-black flex justify-center bg-background text-white min-h-screen">
+      <div className=" space-y-6 flex items-start">
         {!isEditing && (
-          <Card className="flex h-[700px] border border-white/80 bg-background rounded-sm">
-            <CardHeader>
-              <CardTitle className="text-2xl font-bold">
-                Select From Top 100 Memes
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col items-center justify-between h-full">
-              <div className="relative w-full h[600px]">
-              <Button
-                className="absolute bottom transform -translate-x-1/2 bg-primary/40 rounded-full p-2"
-                onClick={handlePrev}
-                disabled={carouselIndex >= memeTemplates.length + ITEMS_PER_SLIDE}
-              >
-              </Button>
-                {}
-                <div className="carousel-container overflow-y-hidden overflow-x-hidden "
-                style={{
-                  width:"100%",
-                  height: "3.4%",
-                  position: "relative",
-                }}
-              >
-                <div
-                className="carousel-track transtion-transform duration-300 ease-in-out"
-                style={{
-                  transform: `translateY(-${(carouselIndex / ITEMS_PER_SLIDE) * 3}%)`,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "8px",
-                }}
-              >
-                {memeTemplates.map((meme) => (
+          <div className="flex items-center gap-4">
+            <Card className="flex h-[700px] border border-white/80 bg-background rounded-sm">
+              <CardHeader>
+                <CardTitle className="text-2xl font-bold">
+                  Select From Top 100 Memes
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="flex items-center justify-center h-full w-full">
                   <div
-                    key={meme.name}
-                    className="carousel-item"
-                    style={{
-                      width: "150px",
-                      height: "150px",
-                      flexShrink: 4,
-                    }}
-                    onClick={() => setSelectedMeme(meme.url)}
-                  >
+                   className=" carousel-container overflow-y-hidden overflow-x-hidden "
+                   style={{
+                    width:"100%",
+                    maxWidth: "400px",
+                    height: "540px",
+                    position: "relative",
+                    overflow: "hidden",
+                  }}
+                >
+                  <div
+                  className="carousel-track transtion-transform duration-300 ease-in-out"
+                  style={{
+                    transform: `translateY(-${carouselIndex * 160}px)`,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "8px",
+                    height: `${memeTemplates.length * 160}px`,
+                    alignItems: "center"
+                  }}
+                >
+                  {memeTemplates.map((meme) => (
                     <div
-                      className="meme-container cursor-pointer"
+                      key={meme.name}
+                      className="carousel-item"
                       style={{
-                      width: "150px",
-                      height: "150px",
-                      backgroundColor: "#1a1a1a",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      overflow: "hidden",
-                      margin: "0 auto",
-                      transition : 'transform 0.2s',
-                    }}
-                      onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-                      onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                        width: "250px",
+                        height: "150px",
+                        flexShrink: 0,
+                      }}
+                      onClick={() => setSelectedMeme(meme.url)}
                     >
-                        <img
-                          src={meme.url}
-                          alt={meme.name}
-                          className="w-full h-full object-cover rounded-sm"
-                          crossOrigin="anonymous"
-                        />
+                      <div
+                        className="meme-container cursor-pointer"
+                        style={{
+                        width: "250px",
+                        height: "150px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        overflow: "hidden",
+                        margin: "0 auto",
+                        transition : 'transform 0.2s',
+                      }}
+                        onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+                        onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                      >
+                          <img
+                            src={meme.url}
+                            alt={meme.name}
+                            className="w-full h-full object-cover rounded-sm"
+                            crossOrigin="anonymous"
+                          />
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-                <Button
-              className="absolute top transform -translate-x-1/2 bg-primary/40 rounded-full p-2"
-              onClick={handleNext}
-              disabled={carouselIndex >= memeTemplates.length - ITEMS_PER_SLIDE}
-              >
-              </Button>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+            <div className="flex flex-col gap-2 mt[80px]">
+                  <Button
+                    className="bg-primary/80 hover:bg-primary text-white rounded-sm p-2 w-15 h-17"
+                    onClick={handlePrev}
+                    disabled={carouselIndex === 0}
+                  >
+                    <FaArrowUp size={20}/>
+                  </Button>
+                    <Button
+                  className="bg-primary/80 hover:bg-primary text-white rounded-sm p-2 w-15 h-17"
+                  onClick={handleNext}
+                  disabled={carouselIndex >= memeTemplates.length - ITEMS_PER_SLIDE}
+                  >
+                    <FaArrowDown size={20}/>
+                  </Button>
+                </div>
+          </div>
         )}
 
         {isEditing && (
-          <Card className="container edit-section h-max w-[450px] border border-white/80 bg-background text-white rounded-sm">
+          <div className="flex flex-col gap-6">
+          <Card className="edit-section h-max w-[450px] border border-white/80 bg-background text-white rounded-sm">
             <CardHeader>
               <Button variant="destructive" onClick={handleBack} className="mb-2">
                 <i className="fas fa-arrow-left mr-2"></i> Back
@@ -525,9 +534,6 @@ useEffect(() => {
               </div>
             </CardContent>
           </Card>
-        )}
-
-        {isEditing && (
           <Card className="h-[200px] w-[450px] border border-white/80 bg-background text-white rounded-sm">
             <CardHeader>
               <CardTitle className="text-3xl font-semibold">Submit</CardTitle>
@@ -541,6 +547,7 @@ useEffect(() => {
               </Button>
             </CardFooter>
           </Card>
+        </div>
         )}
       </div>
 
