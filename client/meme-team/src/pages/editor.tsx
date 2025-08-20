@@ -373,14 +373,14 @@ useEffect(() => {
             </Card>
             <div className="flex flex-col gap-2 mt[80px]">
                   <Button
-                    className="bg-primary/80 hover:bg-primary text-white rounded-sm p-2 w-15 h-17"
+                    className="bg-primary/80 hover:bg-primary text-white rounded-sm p-2 w-5 h-17"
                     onClick={handlePrev}
                     disabled={carouselIndex === 0}
                   >
                     <FaArrowUp size={20}/>
                   </Button>
                     <Button
-                  className="bg-primary/80 hover:bg-primary text-white rounded-sm p-2 w-15 h-17"
+                  className="bg-primary/80 hover:bg-primary text-white rounded-sm p-2 w-5 h-17"
                   onClick={handleNext}
                   disabled={carouselIndex >= memeTemplates.length - ITEMS_PER_SLIDE}
                   >
