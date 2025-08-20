@@ -19,7 +19,18 @@ import {
 import { Canvas, Image, Textbox, Shadow } from "fabric";
 import Masonry from "masonry-layout";
 import ImagesLoaded from "imagesloaded";
-import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
+import { 
+  FaArrowUp, 
+  FaArrowDown, 
+  FaAlignLeft , 
+  FaArrowLeft, 
+  FaAlignCenter, 
+  FaAlignRight, 
+  FaBold, 
+  FaItalic, 
+  FaUnderline,
+  FaThumbsUp
+} from 'react-icons/fa';
 
 const memeTemplates = [
   {"id":"234202281","name":"AJ Styles & Undertaker","url":"https:\/\/i.imgflip.com\/3vfrmx.jpg","width":933,"height":525,"box_count":2,"captions":41000},{"id":"84341851","name":"Evil Kermit","url":"https:\/\/i.imgflip.com\/1e7ql7.jpg","width":700,"height":325,"box_count":2,"captions":156250},
@@ -144,7 +155,7 @@ export default function MemePage() {
   const fabricCanvasRef = useRef<Canvas | null>(null);
   const savedMemesMasonryRef = useRef<Masonry | null>(null);
 
-  const ITEMS_PER_SLIDE = 4;
+  const ITEMS_PER_SLIDE = 3.5;
 
   const handleNext = () => {
     console.log("handlePrev, current index:", carouselIndex)
@@ -384,7 +395,7 @@ useEffect(() => {
           <Card className="edit-section h-max w-[450px] border border-white/80 bg-background text-white rounded-sm">
             <CardHeader>
               <Button variant="destructive" onClick={handleBack} className="mb-2">
-                <i className="fas fa-arrow-left mr-2"></i> Back
+                <FaArrowLeft size={20}/> Back
               </Button>
               <CardTitle className="text-2xl font-bold">Text</CardTitle>
             </CardHeader>
@@ -403,6 +414,54 @@ useEffect(() => {
                 >
                   Add Text
                 </Button>
+              </div>
+              <div className="flex flex-row gap-15 m-3 ">
+                <div>
+                <label className="block mb-1">Text Alignment</label>
+                <div className="flex gap-2">
+                  <Button
+                    variant={textAlign === "left" ? "default" : "outline"}
+                    onClick={() => setTextAlign("left")}
+                  >
+                    <FaAlignLeft size={20}/>
+                  </Button>
+                  <Button
+                    variant={textAlign === "center" ? "default" : "outline"}
+                    onClick={() => setTextAlign("center")}
+                  >
+                    <FaAlignCenter size={20}/>
+                  </Button>
+                  <Button
+                    variant={textAlign === "right" ? "default" : "outline"}
+                    onClick={() => setTextAlign("right")}
+                  >
+                    <FaAlignRight size={20}/>
+                  </Button>
+                  </div>
+                </div>
+                <div>
+                <label className="block mb-1">Font Style</label>
+                <div className="flex gap-2">
+                  <Button
+                    variant={fontStyle.bold ? "default" : "outline"}
+                    onClick={() => setFontStyle({ ...fontStyle, bold: !fontStyle.bold })}
+                    >
+                    <FaBold size={20}/>
+                  </Button>
+                  <Button
+                    variant={fontStyle.italic ? "default" : "outline"}
+                    onClick={() => setFontStyle({ ...fontStyle, italic: !fontStyle.italic })}
+                    >
+                    <FaItalic size={20}/>
+                  </Button>
+                  <Button
+                    variant={fontStyle.underline ? "default" : "outline"}
+                    onClick={() => setFontStyle({ ...fontStyle, underline: !fontStyle.underline })}
+                    >
+                    <FaUnderline size={20}/>
+                  </Button>
+                  </div>
+                </div>
               </div>
               <div>
                 <label className="block mb-1">Font Family</label>
@@ -486,52 +545,6 @@ useEffect(() => {
                   onValueChange={(val) => setOpacity(val[0])}
                 />
               </div>
-              <div>
-                <label className="block mb-1">Text Alignment</label>
-                <div className="flex gap-2">
-                  <Button
-                    variant={textAlign === "left" ? "default" : "outline"}
-                    onClick={() => setTextAlign("left")}
-                  >
-                    <i className="fas fa-align-left">left</i>
-                  </Button>
-                  <Button
-                    variant={textAlign === "center" ? "default" : "outline"}
-                    onClick={() => setTextAlign("center")}
-                  >
-                    <i className="fas fa-align-center">center</i>
-                  </Button>
-                  <Button
-                    variant={textAlign === "right" ? "default" : "outline"}
-                    onClick={() => setTextAlign("right")}
-                  >
-                    <i className="fas fa-align-right">right</i>
-                  </Button>
-                </div>
-              </div>
-              <div>
-                <label className="block mb-1">Font Style</label>
-                <div className="flex gap-2">
-                  <Button
-                    variant={fontStyle.bold ? "default" : "outline"}
-                    onClick={() => setFontStyle({ ...fontStyle, bold: !fontStyle.bold })}
-                  >
-                    <i className="fas fa-bold">BOLD</i>
-                  </Button>
-                  <Button
-                    variant={fontStyle.italic ? "default" : "outline"}
-                    onClick={() => setFontStyle({ ...fontStyle, italic: !fontStyle.italic })}
-                  >
-                    <i className="fas fa-italic">italic</i>
-                  </Button>
-                  <Button
-                    variant={fontStyle.underline ? "default" : "outline"}
-                    onClick={() => setFontStyle({ ...fontStyle, underline: !fontStyle.underline })}
-                  >
-                    <i className="fas fa-underline">underline</i>
-                  </Button>
-                </div>
-              </div>
             </CardContent>
           </Card>
           <Card className="h-[200px] w-[450px] border border-white/80 bg-background text-white rounded-sm">
@@ -543,6 +556,7 @@ useEffect(() => {
                 className="w-full bg-primary/40 rounded-sm"
                 onClick={generateMeme}
               >
+                <FaThumbsUp size={20}/>
                 Submit Meme
               </Button>
             </CardFooter>
